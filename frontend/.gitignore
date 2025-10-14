@@ -1,0 +1,74 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env.local
+.env.production.local
+.env.development.local
+.env.test.local
+
+# Next.js build output
+.next/
+out/
+
+# Production build
+dist/
+
+# Logs
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output/
+
+# Verzeichnisse für Tests
+junit.xml
+coverage/
+
+# Optional npm cache directory
+.npm
+
+# Output of `npm pack`
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# Next.js cache
+.next/cache/
+
+# Temporary files
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build outputs (if you have them)
+build/
+public/build/
