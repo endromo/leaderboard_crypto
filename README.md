@@ -64,23 +64,22 @@ cd <your-project-name>
 cd backend
 ```
 
-# Install dependencies
+#### Install dependencies
 
 ```
 cargo build
 ```
 
-# Set up environment variables
+#### Set up environment variables
 ```
 cp .env.example .env
 ```
 
-# Edit .env with your database credentials
+#### Edit .env with your database credentials
 
-# Run database migrations
-# (Use sqlx-cli or manually create tables)
+#### Run database migrations
 
-# Start the server
+#### Start the server
 ```
 cargo run
 ```
@@ -89,18 +88,18 @@ cargo run
 ```
 cd frontend
 ```
-# Install dependencies
+#### Install dependencies
 ```
 npm install
 ```
 
-# Set up environment variables
+#### Set up environment variables
 ```
 cp .env.local.example .env.local
 ```
-# Edit .env.local if needed
+#### Edit .env.local if needed
 
-# Start the development server
+#### Start the development server
 ```
 npm run dev
 ```
