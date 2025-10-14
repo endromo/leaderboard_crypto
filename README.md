@@ -28,6 +28,7 @@ A full-stack application that displays a leaderboard of user wallet addresses ba
 
 ## 📁 Project Structure
 
+```
 ├── backend/
 │ ├── src/
 │ │ ├── main.rs
@@ -42,6 +43,7 @@ A full-stack application that displays a leaderboard of user wallet addresses ba
 │ │ ├── components/
 │ │ └── lib/
 │ └── .env.local
+```
 
 ## 🚀 Setup Instructions
 
