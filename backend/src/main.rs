@@ -1,7 +1,7 @@
 use axum::routing::{get, post};
 use axum::Router;
+use sqlx::postgres::PgPoolOptions;
 use sqlx::{Pool, Postgres};
-use sqlx::{ postgres::PgPoolOptions};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 mod handlers;
@@ -18,7 +18,7 @@ async fn main() {
         .init();
 
     let database_url = get_database_url();
-    let pool:Pool<Postgres> = PgPoolOptions::new()
+    let pg_pool: Pool<Postgres> = PgPoolOptions::new()
         .max_connections(5)
         .connect(&database_url)
         .await
@@ -33,21 +33,21 @@ async fn main() {
 
     // The fix: Initialize the Router with the full state tuple.
     let app = Router::new()
-        .with_state((pool, schema)) // <--- Move .with_state() here
+        .with_state((pg_pool, schema)) // <--- Move .with_state() here
         .route("/api/leaderboard", get(get_leaderboard))
         .route("/graphql", post(graphql_handler));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3001").await.unwrap();
     tracing::info!("Server running on http://localhost:3001");
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app).await.unwrap(); // <-- Ini sudah benar
 }
 
 fn get_database_url() -> String {
-    let db_user = std::env::var("DB_USER").expect("DB_USER must be set");
-    let db_pass = std::env::var("DB_PASS").expect("DB_PASS must be set");
-    let db_host = std::env::var("DB_HOST").expect("DB_HOST must be set");
-    let db_port = std::env::var("DB_PORT").expect("DB_PORT must be set");
-    let db_name = std::env::var("DB_NAME").expect("DB_NAME must be set");
+    let db_user: String = std::env::var("DB_USER").expect("DB_USER must be set");
+    let db_pass: String = std::env::var("DB_PASS").expect("DB_PASS must be set");
+    let db_host: String = std::env::var("DB_HOST").expect("DB_HOST must be set");
+    let db_port: String = std::env::var("DB_PORT").expect("DB_PORT must be set");
+    let db_name: String = std::env::var("DB_NAME").expect("DB_NAME must be set");
 
     format!(
         "postgres://{}:{}@{}:{}/{}",

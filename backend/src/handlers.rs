@@ -1,23 +1,22 @@
 mod models;
 mod errors;
 
+use models::{UserPnl, LeaderboardQuery, LeaderboardInput};
 use errors::AppError;
-use models::{LeaderboardQuery, UserPnl};
-
-use async_graphql::{Context, EmptyMutation, EmptySubscription, Object, Schema};
+use async_graphql::{Context, Object, Schema, EmptyMutation, EmptySubscription};
 use axum::{
     extract::{Query, State},
     response::Json,
 };
 use serde::Deserialize;
-use sqlx::PgPool;
+use sqlx::{Pool, Postgres};
 
 pub async fn get_leaderboard(
     Query(params): Query<LeaderboardQuery>,
-    State(pool): State<PgPool>,
+    State((pool, _)): State<(Pool<Postgres>, Schema<QueryRoot, EmptyMutation, EmptySubscription>)>,
 ) -> Result<Json<Vec<UserPnl>>, AppError> {
-    let limit = params.limit.unwrap_or(10).max(1).min(30);
-    let offset = (params.page.unwrap_or(1) - 1) as i32 * limit;
+    let limit:i64 = params.limit.unwrap_or(10).max(1).min(30).into();
+    let offset = (params.page.unwrap_or(1) - 1) as i64 * limit;
 
     let query = sqlx::query_as!(
         UserPnl,
@@ -35,31 +34,20 @@ pub async fn get_leaderboard(
     );
 
     let result = query.fetch_all(&pool).await?;
-
     Ok(Json(result))
 }
 
 // GraphQL Query
-#[derive(Deserialize)]
-pub struct LeaderboardInput {
-    pub limit: Option<i32>,
-    pub page: Option<i32>,
-}
-
 pub struct QueryRoot;
 
 #[Object]
 impl QueryRoot {
-    async fn leaderboard(
-        &self,
-        ctx: &Context<'_>,
-        input: LeaderboardInput,
-    ) -> Result<Vec<UserPnl>, async_graphql::Error> {
-        let pool = ctx
-            .data::<PgPool>()
+    async fn leaderboard(&self, ctx: &Context<'_>, input: LeaderboardInput) -> Result<Vec<UserPnl>, async_graphql::Error> {
+        let pool = ctx.data::<Pool<Postgres>>()
             .map_err(|_| async_graphql::Error::new("Database not available"))?;
-        let limit = input.limit.unwrap_or(10).max(1).min(30);
-        let offset = (input.page.unwrap_or(1) - 1) as i32 * limit;
+
+        let limit:i64 = input.limit.unwrap_or(10).max(1).min(30).into();
+        let offset = (input.page.unwrap_or(1) - 1) as i64 * limit;
 
         let query = sqlx::query_as!(
             UserPnl,
@@ -82,7 +70,7 @@ impl QueryRoot {
 }
 
 pub async fn graphql_handler(
-    State((_, schema)): State<(PgPool, Schema<QueryRoot, EmptyMutation, EmptySubscription>)>,
+    State((pool, schema)): State<(Pool<Postgres>, Schema<QueryRoot, EmptyMutation, EmptySubscription>)>,
     req: async_graphql_axum::GraphQLRequest,
 ) -> async_graphql_axum::GraphQLResponse {
     schema.execute(req.into_inner()).await.into()
