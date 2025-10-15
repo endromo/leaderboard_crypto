@@ -31,10 +31,11 @@ async fn main() {
     )
     .finish();
 
+    // The fix: Initialize the Router with the full state tuple.
     let app = Router::new()
+        .with_state((pool, schema)) // <--- Move .with_state() here
         .route("/api/leaderboard", get(get_leaderboard))
-        .route("/graphql", post(graphql_handler))
-        .with_state((pool, schema));
+        .route("/graphql", post(graphql_handler));
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3001").await.unwrap();
     tracing::info!("Server running on http://localhost:3001");
