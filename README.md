@@ -1,4 +1,4 @@
-# 🏆 Trading Leaderboard System
+# 🏆 Crypto Trading Leaderboard System
 
 A high-performance, real-time trading leaderboard system built with Rust, Next.js, and PostgreSQL. Track and rank traders by their performance metrics including ROI, P&L, and trading volume.
 
