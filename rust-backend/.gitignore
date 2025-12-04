@@ -1,0 +1,52 @@
+# Rust Backend .gitignore
+
+# Rust build artifacts
+target/
+Cargo.lock
+
+# Debug files
+**/*.rs.bk
+*.pdb
+
+# SQLx offline data (optional - commit if you want offline compile)
+.sqlx/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+tarpaulin-report.html
+cobertura.xml
+lcov.info
+
+# Backup files
+*.backup
+*.bak
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Migration backups
+migrations.backup/
+
+# Profiling
+flamegraph.svg
+perf.data
+perf.data.old

@@ -1,14 +1,40 @@
 {
-  "name": "frontend",
+  "name": "leaderboard-frontend",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "docker:build": "docker build -t leaderboard-frontend .",
+    "docker:run": "docker run -p 3000:3000 leaderboard-frontend",
+    "docker:compose": "docker-compose up",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "format": "prettier --write ."
   },
   "dependencies": {
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest"
+    "next": "15.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.8.2",
+    "lucide-react": "^0.309.0",
+    "viem": "^2.0.0",
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "@tanstack/react-query": "^5.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "15.0.0"
   }
 }
